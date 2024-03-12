@@ -6,6 +6,8 @@ public class RotaceKamery : MonoBehaviour
 {
     // Start is called before the first frame update
     private Vector2 otoc;
+    public static bool muzeOtocit = true;
+
     void Start()
     {
         Cursor.visible = false;
@@ -15,7 +17,10 @@ public class RotaceKamery : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        otoc.y += Input.GetAxis("Mouse Y");
-        transform.localRotation = Quaternion.Euler(-otoc.y, 0, 0);
+        if (muzeOtocit)
+        {
+            otoc.y += Input.GetAxis("Mouse Y");
+            transform.localRotation = Quaternion.Euler(-otoc.y, 0, 0);
+        }
     }
 }
