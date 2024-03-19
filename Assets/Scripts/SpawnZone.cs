@@ -40,7 +40,7 @@ public class Spawner : MonoBehaviour
 
                 wave++;
                 waveCount.text = "Wave " + wave;
-                enemiesCount = enemiesCount * 2;
+                enemiesCount += 1 + enemiesCount / 3;
             }
         }
         else {

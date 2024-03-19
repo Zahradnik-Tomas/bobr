@@ -5,18 +5,31 @@ using UnityEngine;
 
 public class MoveToTarget : MonoBehaviour
 {
+    [SerializeField]
     private int hp = 100;
     public GameObject[] targets;
     private GameObject closestTarget;
 
     [SerializeField]
-    private float speed = 5f;
+    private float speed = 2.25f;
+
+    [SerializeField]
+    private float attackCooldown = 1f;
+    [SerializeField]
+    private int damage = 10;
+    private bool canAttack = false;
+    System.Random rnd = new System.Random();
+
+    Barrier bar;
 
     void Start() {
         targets = GameObject.FindGameObjectsWithTag("Barrier");
     }
 
     void Update() {
+        if (transform.position.y <= -50){
+            Umri();
+        }
         if (targets.Length > 0) {
             closestTarget = GetClosestTarget();
 
@@ -32,6 +45,12 @@ public class MoveToTarget : MonoBehaviour
                     speed = 0;
                 }
             }
+        }
+    }
+    private IEnumerator EnemyAttackRoutine() {
+        while (canAttack) {
+            yield return new WaitForSeconds(3f);
+            bar.TakeDamage(damage);
         }
     }
 
@@ -57,53 +76,39 @@ public class MoveToTarget : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Vydle"))
+        if (collision.gameObject.CompareTag("Barrier"))
         {
-            if (hp > 0)
-            {
-                hp -= 20;
-                Destroy(collision.gameObject);
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
+            bar = collision.gameObject.GetComponent<Barrier>();
+            canAttack = true;
+            StartCoroutine(EnemyAttackRoutine());
         }
-        if (collision.gameObject.CompareTag("Kus"))
+        else if (collision.gameObject.CompareTag("Vydle"))
         {
-            if (hp > 0)
-            {
-                hp -= 40;
-                Destroy(collision.gameObject);
+            if(rnd.NextDouble() < Vydle.vydler.CritChanc){
+                DostanDmg(Vydle.vydler.Damage*2);
             }
-            else
-            {
-                Destroy(gameObject);
+            else{
+                DostanDmg(Vydle.vydler.Damage);
             }
+            Destroy(collision.gameObject);
         }
-        if (collision.gameObject.CompareTag("Musketa"))
+    }
+    private void OnCollisionExit(Collision collision){
+        if (collision.gameObject.CompareTag("Barrier"))
         {
-            if (hp > 0)
-            {
-                hp -= 50;
-                Destroy(collision.gameObject);
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
+            canAttack = false;
         }
-        if (collision.gameObject.CompareTag("Brokovnice"))
-        {
-            if (hp > 0)
-            {
-                hp -= 100;
-                Destroy(collision.gameObject);
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
+    }
+    public void DostanDmg(int dmg){
+        hp -= dmg;
+        if(hp <= 0){
+            Umri();
         }
+    }
+    private void Umri()
+    {
+        CoinCounter.instance.penize += 1;
+        this.canAttack = false;
+        Destroy(gameObject);
     }
 }

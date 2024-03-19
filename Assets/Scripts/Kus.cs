@@ -5,15 +5,24 @@ using UnityEngine;
 public class Kus : Zbran
 {
     // Start is called before the first frame update
+    System.Random rnd = new System.Random();
+    int demege;
     protected override void Strilej()
     {
-    base.Strilej();
-    RaycastHit hit;
+        if(!Shop.instance.Kus){
+            return;
+        }
+
+        base.Strilej();
+        RaycastHit hit;
         // Does the ray intersect any objects excluding the player layer
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 1000))
         {
-            if(hit.transform.tag == "enemy"){
-                Destroy(hit.transform.gameObject);
+            if(hit.transform.tag == "Enemy"){
+                demege = damage;
+                if(rnd.NextDouble() < critChance)
+                    demege *= 2;
+                hit.transform.gameObject.GetComponent<MoveToTarget>().DostanDmg(demege);
             }
         } //https://docs.unity3d.com/ScriptReference/Physics.RaycastAll.html
     } //https://docs.unity3d.com/ScriptReference/Physics.Raycast.html
