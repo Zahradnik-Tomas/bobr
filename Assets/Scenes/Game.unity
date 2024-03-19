@@ -1819,6 +1819,9 @@ MonoBehaviour:
   bodStrelby: {fileID: 724141659}
   damage: 100
   critChance: 0.25
+  arrowPreFab: {fileID: 6826707847619833476, guid: 6b5c2c47f6147d391b32a2f68270c73b,
+    type: 3}
+  rychlostArrow: 70
 --- !u!114 &821311169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3569,8 +3572,8 @@ MonoBehaviour:
   kus: {fileID: 701705538}
   musketa: {fileID: 274802610}
   brokovnice: {fileID: 2049313928}
-  Vydle: 1
-  Kus: 0
+  Vydle: 0
+  Kus: 1
   Musketa: 0
   Brokovnice: 0
 --- !u!1 &1969175552

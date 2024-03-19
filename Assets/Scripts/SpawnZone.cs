@@ -54,8 +54,8 @@ public class Spawner : MonoBehaviour
     }
 
     void SpawnEnemy() {
-        float spawnX = Random.Range(transform.position.x - 7f, transform.position.x + 7f);
-        float spawnZ = Random.Range(transform.position.z - 7f, transform.position.z + 7f);
+        float spawnX = Random.Range(transform.position.x - 20f, transform.position.x);
+        float spawnZ = Random.Range(transform.position.z - 8f, transform.position.z + 8f);
         Vector3 spawnPosition = new Vector3(spawnX, 1f, spawnZ);
         Instantiate(enemy, spawnPosition, Quaternion.identity);
     }

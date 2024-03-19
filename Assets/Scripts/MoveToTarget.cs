@@ -11,7 +11,7 @@ public class MoveToTarget : MonoBehaviour
     private GameObject closestTarget;
 
     [SerializeField]
-    private float speed = 2.25f;
+    private float speed = 1.5f;
 
     [SerializeField]
     private float attackCooldown = 1f;
