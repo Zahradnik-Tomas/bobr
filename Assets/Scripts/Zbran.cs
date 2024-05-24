@@ -13,7 +13,7 @@ public class Zbran : MonoBehaviour
     [SerializeField]
     protected Transform bodStrelby;
 
-    [SerializeField] protected double damage;
+    [SerializeField] protected int damage;
     [SerializeField] protected double critChance;
     void Start()
     {

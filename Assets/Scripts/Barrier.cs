@@ -10,15 +10,19 @@ public class Barrier : MonoBehaviour
     public GameObject enemyTarget;
     [SerializeField]
     private GameObject endScreen;
-
-    private bool canBeAttacked = true;
-    private float attackCooldown = 1f;
     private Renderer barrierRenderer;
+
+    [SerializeField]
+    GameObject barieraFull;
+    [SerializeField]
+    GameObject barieraMid;
+    [SerializeField]
+    GameObject barieraLow;
 
     public void Start() {
         barrierRenderer = GetComponent<Renderer>();
-
-        StartCoroutine(EnemyAttackRoutine());
+        barieraMid.SetActive(false);
+        barieraLow.SetActive(false);
     }
 
     private void Update() {
@@ -34,40 +38,19 @@ public class Barrier : MonoBehaviour
         UpdateBarrierColor();
     }
 
-    private void OnCollisionEnter(Collision collision) {
-        if (collision.gameObject.CompareTag("Enemy")) {
-            Attack();
-        }
-    }
-
-    private IEnumerator ResetAttackCooldown() {
-        yield return new WaitForSeconds(attackCooldown);
-        canBeAttacked = true;
-    }
-
-    private IEnumerator EnemyAttackRoutine() {
-        while (true) {
-            yield return new WaitForSeconds(3f);
-            Attack();
-        }
-    }
-
-    private void Attack() {
-        if (canBeAttacked) {
-            Debug.Log("Barrier hit");
-            canBeAttacked = false;
-            StartCoroutine(ResetAttackCooldown());
-            TakeDamage(20);
-        }
-    }
-
     public void TakeDamage(int damage) {
         hp -= damage;
     }
 
     private void UpdateBarrierColor() {
         float hpRatio = (float)hp / 100f;
-
-        barrierRenderer.material.color = new Color(1f - hpRatio, hpRatio, 0f);
+        if(hp <= 70 && hp > 30){
+            barieraFull.SetActive(false);
+            barieraMid.SetActive(true);
+        }
+        if(hp <= 30){
+            barieraMid.SetActive(false);
+            barieraLow.SetActive(true);
+        }
     }
 }
